@@ -5,11 +5,35 @@ from flask import abort
 from flask import request
 app = Flask(__name__)
 
-BOT_TOKEN = "dw5fb5d20cc1d377b59f96ac82489a73bf"
+BOT_TOKEN = ""
+
+import requests
+
+PAGE_TOKEN = ""
+FB_MESSENGER_URI = "https://graph.facebook.com/v2.6/me/messages?access_token=" + PAGE_TOKEN
+
+def send_text(reply_token, text):
+    data = {
+        "recipient": {"id": reply_token},
+        "message": {"text": text}
+    }
+    r = requests.post(FB_MESSENGER_URI, json=data)
+    if r.status_code != requests.codes.ok:
+        print(r.content)
 
 def fb_post_handler(req):
     print(req.get_data())
     resp_body = req.get_json()
+
+    for entry in resp_body["entry"]:
+        for msg in entry["messaging"]:
+            sender = msg['sender']['id']
+            if 'message' in msg:
+                if msg['message'].get('is_echo'):
+                    return ""
+                text = msg['message']['text']
+                send_text(sender, text)
+
     return ""
 
 @app.route("/fbCallback", methods=['GET', 'POST'])

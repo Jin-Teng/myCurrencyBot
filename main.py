@@ -5,7 +5,12 @@ from flask import abort
 from flask import request
 app = Flask(__name__)
 
-BOT_TOKEN = ""
+BOT_TOKEN = "dw5fb5d20cc1d377b59f96ac82489a73bf"
+
+def fb_post_handler(req):
+    print(req.get_data())
+    resp_body = req.get_json()
+    return ""
 
 @app.route("/fbCallback", methods=['GET', 'POST'])
 def fb_cb_handler():
@@ -15,6 +20,8 @@ def fb_cb_handler():
             return request.args.get('hub.challenge')
         else:
             abort(403)
+    elif request.method == 'POST':
+        return fb_post_handler(request)
     else:
         abort(405) 
 

@@ -33,6 +33,9 @@ def fb_post_handler(req):
                     return ""
                 text = msg['message']['text']
                 send_text(sender, text)
+            elif 'postback' in msg:
+                if msg['postback']['payload'] == "GET_STARTED":
+                    send_text(sender, 'welcome')
 
     return ""
 

@@ -32,11 +32,13 @@ def send_template_message(user_id, elements):
     if r.status_code != requests.codes.ok:
         print(r.content)
 
-def send_text(reply_token, text):
+def send_text(reply_token, text, answers):
     data = {
         "recipient": {"id": reply_token},
         "message": {"text": text}
     }
+    if answers:
+        data["message"]["quick_replies"] = answers
     r = requests.post(FB_MESSENGER_URI, json=data)
     if r.status_code != requests.codes.ok:
         print(r.content)
@@ -72,12 +74,12 @@ def fb_post_handler(req):
                     }]
                     send_template_message(sender, element)
                 else:
-                    send_text(sender, text)
+                    send_text(sender, text, None)
             elif 'postback' in msg:
                 if msg['postback']['payload'] == "GET_STARTED":
-                    send_text(sender, 'welcome')
+                    send_text(sender, 'welcome', None)
                 elif msg['postback']['payload'] == "HAHAHA":
-                    send_text(sender, 'hahaha!')
+                    send_text(sender, 'hahaha!', None)
     return ""
 
 @app.route("/fbCallback", methods=['GET', 'POST'])

@@ -56,7 +56,13 @@ def fb_post_handler(req):
                     element = [{
                         "title":"BTC - USD",
                         "image_url":"https://www.google.com/finance/chart?biw=696&bih=775&q=CURRENCY:BTCUSD&tkr=1&p=5Y&chst=vkc&chs=267x94",
-                        "subtitle":"The currency between BTC and USD"
+                        "subtitle":"The currency between BTC and USD",
+                        "buttons": [
+                            {"type": "web_url",
+                             "url": "https://btc-e.com/exchange/btc_usd",
+                             "title": "View in BTC-E"
+                             }
+                        ]
                     }]
                     send_template_message(sender, element)
                 else:

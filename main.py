@@ -61,6 +61,10 @@ def fb_post_handler(req):
                             {"type": "web_url",
                              "url": "https://btc-e.com/exchange/btc_usd",
                              "title": "View in BTC-E"
+                             },
+                            {"type": "postback",
+                             "payload": "HAHAHA",
+                             "title": "Laugh"
                              }
                         ]
                     }]
@@ -70,7 +74,8 @@ def fb_post_handler(req):
             elif 'postback' in msg:
                 if msg['postback']['payload'] == "GET_STARTED":
                     send_text(sender, 'welcome')
-
+                elif msg['postback']['payload'] == "HAHAHA":
+                    send_text(sender, 'hahaha!')
     return ""
 
 @app.route("/fbCallback", methods=['GET', 'POST'])

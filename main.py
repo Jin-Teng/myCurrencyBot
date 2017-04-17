@@ -51,6 +51,8 @@ def fb_post_handler(req):
             if 'message' in msg:
                 if msg['message'].get('is_echo'):
                     return ""
+                if 'text' not in msg['message']:
+                    return ""
                 text = msg['message']['text']
                 if text == "btcusd":
                     element = [{

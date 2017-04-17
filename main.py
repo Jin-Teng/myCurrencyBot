@@ -55,6 +55,13 @@ def fb_post_handler(req):
                     return ""
                 if 'text' not in msg['message']:
                     return ""
+                if 'quick_reply' in msg['message']:
+                    reply = msg["message"]["quick_reply"]
+                    if reply['payload'] == "QUERY_CURRENCY":
+                        send_text(sender, "This function is not worked yet.", None)
+                    elif reply['payload'] == "CANCEL":
+                        send_text(sender, "No problem.", None)
+                    return ""
                 text = msg['message']['text']
                 if text == "btcusd":
                     element = [{
@@ -73,6 +80,17 @@ def fb_post_handler(req):
                         ]
                     }]
                     send_template_message(sender, element)
+                elif text == "Btc":
+                    send_text(sender, "Query currency?", [
+                        {"content_type":"text",
+                         "title":"Yes",
+                         "payload":"QUERY_CURRENCY"
+                         },
+                        {"content_type":"text",
+                         "title":"No",
+                         "payload":"CANCEL"
+                         }
+                    ])
                 else:
                     send_text(sender, text, None)
             elif 'postback' in msg:
